@@ -7,6 +7,7 @@ let defaultState = {
   token: '',
   login: false,
   expenses: [],
+  allCategories: [],
   categories: [],
   savings: [],
   balance: 0,
@@ -67,10 +68,21 @@ const errorHandler = (state = defaultState.errors, action) => {
   }
 };
 
+const allCategoriesHandler = (state = defaultState.allCategories, action) => {
+  switch (action.type) {
+    case 'ALL_CATEGORIES':
+      return action.categories;
+    case 'NO_ALL_CATEGORIES':
+      return [];
+    default:
+      return state;
+  }
+};
+
 const categoriesHandler = (state = defaultState.categories, action) => {
   switch (action.type) {
     case 'CATEGORIES':
-      return action.categories;
+      return action.payload;
     case 'NO_CATEGORIES':
       return [];
     default:
@@ -119,6 +131,7 @@ const rootReducer = combineReducers({
   login: loggedIn,
   expenses: setExpenses,
   categories: categoriesHandler,
+  allCategories: allCategoriesHandler,
   savings: savingsHandler,
   balance: balanceHandler,
 });

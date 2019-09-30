@@ -28,14 +28,14 @@ const RecentTransactions = props => {
   };
 
   const homeButton = () => {
-    props.navigation.navigate('Home');
+    props.navigation.navigate('Landing');
   };
 
   return (
     <>
       <View style={styles.statusbar}>
         <Button
-          title="Home"
+          title="< Home"
           type="clear"
           onPress={homeButton}
           style={styles.homeButton}

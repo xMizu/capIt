@@ -54,14 +54,14 @@ const AddExpense = props => {
   };
 
   const homeButton = () => {
-    props.navigation.navigate('Home');
+    props.navigation.navigate('Landing');
   };
 
   return (
     <>
       <View style={styles.statusbar}>
         <Button
-          title="Home"
+          title="< Home"
           type="clear"
           onPress={homeButton}
           style={styles.homeButton}
@@ -132,7 +132,7 @@ const AddExpense = props => {
 };
 
 const msp = state => ({
-  categories: state.categories,
+  categories: state.allCategories,
   token: state.token,
   expenses: state.expenses,
   user: state.user,

@@ -1,12 +1,18 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {logout, fetchUser, fetchCategories} from '../actions';
-import PieChartExample from './PieChart';
+import PieChartExample from '../components/PieChart';
 import {Button} from 'react-native-elements';
+import {logout, fetchUser, fetchCategories} from '../actions';
 
-const Home = props => {
+const Landing = props => {
   useEffect(() => {
     props.fetchUser(props.token);
     props.fetchCategories();
@@ -32,8 +38,6 @@ const Home = props => {
     props.navigation.navigate('Payment');
   };
 
-  console.log('Home');
-
   return (
     <>
       <View style={styles.container}>
@@ -43,8 +47,8 @@ const Home = props => {
           </Text>
         </View>
         {/* <TouchableOpacity onPress={() => logUserout(props)}>
-            <Text>Log Out</Text>
-          </TouchableOpacity> */}
+          <Text>Log Out</Text>
+        </TouchableOpacity> */}
         <View style={styles.pie}>
           <PieChartExample />
         </View>
@@ -74,30 +78,6 @@ const Home = props => {
             onPress={savings}
           />
         </View>
-        {/* <Text style={styles.text}>Home</Text> */}
-        {/* <View style={styles.optionsList}>
-            <View style={styles.options}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={recentTransactions}>
-                <Text style={styles.optionText}>Recent Transactions</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.options}>
-              <TouchableOpacity style={styles.button} onPress={addExpense}>
-                <Text style={styles.optionText}>Add Expense</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.options}>
-              <TouchableOpacity style={styles.button} onPress={savings}>
-                <Text style={styles.optionText}>Create Savings Goal</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.options}>
-              <TouchableOpacity style={styles.button} onPress={payment}>
-                <Text style={styles.optionText}>Payment</Text>
-              </TouchableOpacity>
-            </View> */}
       </View>
 
       {/* </View> */}
@@ -106,9 +86,8 @@ const Home = props => {
   );
 };
 
-Home.navigationOptions = ({navigation}) => ({
+Landing.navigationOptions = ({navigation}) => ({
   //   header: null,
-  title: 'Home',
   headerStyle: {backgroundColor: '#41B3A3', opacity: 1},
 });
 
@@ -194,4 +173,4 @@ const mdp = dispatch => {
 export default connect(
   msp,
   mdp,
-)(Home);
+)(Landing);

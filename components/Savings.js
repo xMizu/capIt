@@ -14,28 +14,41 @@ const Savings = props => {
   [show, setShow] = useState(true);
 
   const clickHandler = () => {
-    savings = {
-      category_id: props.categories.find(c => c.name === categoryForm).id,
-      amount,
-      name,
-      description,
-      end,
-      user_id: props.user.id,
-    };
-    props.postSavings(savings).then(() => {
-      alert('Posted');
-    });
+    const today = new Date();
+    if (
+      end.getMonth() >= today.getMonth() &&
+      end.getDate() >= today.getDate()
+    ) {
+      savings = {
+        category_id: props.categories.find(c => c.name === categoryForm).id,
+        amount,
+        name,
+        description,
+        end,
+        user_id: props.user.id,
+      };
+      props.postSavings(savings).then(() => {
+        alert('Posted');
+        setEnd(new Date());
+        setAmount('');
+        setName('');
+        setDescription('');
+        setCategoryForm('');
+      });
+    } else {
+      alert('Date is invalid');
+    }
   };
 
   const homeButton = () => {
-    props.navigation.navigate('Home');
+    props.navigation.navigate('Landing');
   };
   console.log('saving', props);
   return (
     <>
       <View style={styles.statusbar}>
         <Button
-          title="Home"
+          title="< Home"
           type="clear"
           onPress={homeButton}
           style={styles.homeButton}
@@ -96,7 +109,7 @@ const Savings = props => {
           <DateTimePicker
             value={end}
             is24Hour={true}
-            onChange={(e, date) => setEnd(end)}
+            onChange={(e, date) => setEnd(date)}
           />
         </View>
         <Button title="Submit" onPress={clickHandler} />

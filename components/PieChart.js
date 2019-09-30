@@ -7,34 +7,17 @@ const PieChartExample = props => {
   [label, setLabel] = useState('Balance');
   [value, setValue] = useState(props.balance);
   [labelWidth, setLabelWidth] = useState(0);
-  // state = {
-  //   selectedSlice: {
-  //     label: 'Balance',
-  //     value: this.props.user.balance,
-  //   },
-  //   labelWidth: 0,
-  // };
-
-  // useEffect(() => {
-  //   if (!props.balance === null) {
-  //     setValue(props.balance);
-  //   }
-  // }, []);
-
-  // const {labelWidth, selectedSlice} = this.state;
-  // const {label, value} = selectedSlice;
-  const newData = props.expenses;
+  const date = new Date().getMonth();
+  const monthExpenses = props.expenses.filter(exp => {
+    const expDate = new Date(exp.created_at);
+    const hello = expDate.getMonth();
+    return hello === date;
+  });
   const colors = ['#600080', '#9900cc', '#c61aff', '#d966ff', '#ecb3ff'];
-
-  const randomColor = () =>
-    ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(
-      0,
-      7,
-    );
 
   const deviceWidth = Dimensions.get('window').width;
 
-  const pieData = newData.map(exp => ({
+  const pieData = monthExpenses.map(exp => ({
     name: exp.name,
     value: exp.amount,
     svg: {
@@ -42,7 +25,6 @@ const PieChartExample = props => {
       onPress: () => {
         setLabel(exp.name);
         setValue(exp.amount);
-        // this.setState({selectedSlice: {label: exp.name, value: exp.amount}}),
       },
     },
     key: `pie-${exp.id}`,
@@ -68,7 +50,6 @@ const PieChartExample = props => {
           },
         }) => {
           setLabelWidth(width);
-          // this.setState({labelWidth: width});
         }}
         style={{
           fontSize: 24,

@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import Savings from './components/Savings';
 
 const URL = 'http://localhost:3000';
 
@@ -16,12 +15,13 @@ const login = user => dispatch => {
     .then(resp => resp.json())
     .then(resp => {
       if (!resp.status) {
-        debugger;
         AsyncStorage.setItem('id_token', resp.token);
         dispatch({type: 'LOGIN'});
         dispatch({type: 'TOKEN', payload: resp.token});
         dispatch({type: 'EXPENSES', payload: resp.user.expenses});
+        dispatch({type: 'CATEGORIES', payload: resp.user.categories});
         dispatch({type: 'GET_USER', payload: resp.user});
+        dispatch({type: 'SAVINGS', payload: resp.user.savings});
         AsyncStorage.getItem('id_token');
       } else {
         dispatch({type: 'ERROR', payload: resp.message});
@@ -44,7 +44,9 @@ const fetchUser = (arg, dispatch) => {
         console.log(resp);
         dispatch({type: 'GET_USER', payload: resp});
         dispatch({type: 'BALANCE', payload: resp.balance});
+        dispatch({type: 'SAVINGS', payload: resp.savings});
         dispatch({type: 'EXPENSES', payload: resp.expenses});
+        dispatch({type: 'CATEGORIES', payload: resp.categories});
         dispatch({type: 'DONE_LOADING'});
       });
   };
@@ -61,7 +63,7 @@ const fetchCategories = dispatch => {
     .then(resp => resp.json())
     .then(categories => {
       console.log(categories);
-      dispatch({type: 'CATEGORIES', categories});
+      dispatch({type: 'ALL_CATEGORIES', categories});
       dispatch({type: 'DONE_LOADING'});
     });
 };
