@@ -56,10 +56,24 @@ import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 //   },
 // );
 
-const AppStack = createMaterialTopTabNavigator({
-  Landing: Landing,
-  SavingsList: SavingsList,
-});
+const AppStack = createMaterialTopTabNavigator(
+  {
+    Landing: Landing,
+    SavingsList: SavingsList,
+  },
+  {
+    tabBarOptions: {
+      showLabel: false,
+      tabStyle: {
+        height: 80,
+        backgroundColor: '#41B3A3',
+      },
+      indicatorStyle: {
+        backgroundColor: 'white',
+      },
+    },
+  },
+);
 
 const Authload = createSwitchNavigator({AuthLoader: AuthLoader});
 const AuthStack = createSwitchNavigator({

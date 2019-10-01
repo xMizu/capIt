@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   Picker,
@@ -101,14 +101,6 @@ const AddExpense = props => {
             style={styles.descriptionText}
             value={name}
             onChangeText={setName}
-            placeholder="add description"
-            returnKeyType="next"
-          />
-          <TextInput
-            autoCapitalize="sentences"
-            style={styles.descriptionText}
-            value={description}
-            onChangeText={setDescription}
             placeholder="add name"
             returnKeyType="next"
           />
@@ -181,7 +173,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   statusbar: {
-    backgroundColor: 'tomato',
+    backgroundColor: '#41B3A3',
     height: 80,
     justifyContent: 'flex-end',
     alignItems: 'flex-start',

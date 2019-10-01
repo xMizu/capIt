@@ -38,6 +38,8 @@ const Landing = props => {
     props.navigation.navigate('Payment');
   };
 
+  console.log('landing');
+
   return (
     <>
       <View style={styles.container}>
@@ -46,15 +48,15 @@ const Landing = props => {
             {props.user ? `Welcome \n ${props.user.name}` : null}
           </Text>
         </View>
-        {/* <TouchableOpacity onPress={() => logUserout(props)}>
+        <TouchableOpacity onPress={() => logUserout(props)}>
           <Text>Log Out</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <View style={styles.pie}>
           <PieChartExample />
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            title="recent"
+            title="Recent"
             type="outline"
             style={styles.recentTransactions}
             onPress={recentTransactions}
@@ -81,7 +83,7 @@ const Landing = props => {
       </View>
 
       {/* </View> */}
-      {/* <View style={styles.bottom} /> */}
+      <View style={styles.bottom} />
     </>
   );
 };
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textContainer: {
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     flexGrow: 2,
   },
   optionsList: {

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
-import {postSavings} from '../actions';
+import {postSavings, updateSavings} from '../actions';
 import {Button} from 'react-native-elements';
 
 const Savings = props => {
@@ -10,33 +10,69 @@ const Savings = props => {
   [name, setName] = useState('');
   [description, setDescription] = useState('');
   [amount, setAmount] = useState('');
+  [update, setUpdate] = useState('Submit');
   [end, setEnd] = useState(new Date());
   [show, setShow] = useState(true);
 
   const clickHandler = () => {
     const today = new Date();
-    if (
-      end.getMonth() >= today.getMonth() &&
-      end.getDate() >= today.getDate()
-    ) {
+    if (update === 'Update') {
       savings = {
-        category_id: props.categories.find(c => c.name === categoryForm).id,
+        savings_id: props.savings.find(
+          saving =>
+            saving.category_id ===
+            props.categories.find(c => c.name === categoryForm).id,
+        ).id,
         amount,
         name,
-        description,
         end,
         user_id: props.user.id,
       };
-      props.postSavings(savings).then(() => {
-        alert('Posted');
+      props.updateSavings(savings).then(() => {
         setEnd(new Date());
         setAmount('');
         setName('');
-        setDescription('');
         setCategoryForm('');
+        alert('Posted');
       });
     } else {
-      alert('Date is invalid');
+      if (end > today) {
+        savings = {
+          category_id: props.categories.find(c => c.name === categoryForm).id,
+          amount,
+          name,
+          end,
+          user_id: props.user.id,
+        };
+        props.postSavings(savings).then(() => {
+          setEnd(new Date());
+          setAmount('');
+          setName('');
+          setCategoryForm('');
+          alert('Posted');
+        });
+      } else {
+        alert('Date is invalid');
+      }
+    }
+  };
+
+  const changeHandler = e => {
+    setCategoryForm(e);
+    let found = props.categories.find(
+      c => c.name.toLowerCase() === e.toLowerCase(),
+    );
+    if (
+      found &&
+      props.savings.find(saving => saving.category_id === found.id)
+    ) {
+      let saving = props.savings.find(sav => sav.category_id === found.id);
+      setAmount(saving.amount.toString());
+      setName(saving.name);
+      setEnd(new Date(saving.end));
+      setUpdate('Update');
+    } else {
+      update === 'Submit' ? null : setUpdate('Submit');
     }
   };
 
@@ -59,8 +95,8 @@ const Savings = props => {
           autoCapitalize="sentences"
           style={styles.descriptionText}
           value={categoryForm}
-          onChangeText={setCategoryForm}
-          placeholder="Category"
+          onChangeText={changeHandler}
+          placeholder="Input Category"
           returnKeyType="next"
           autoCapitalize="none"
         />
@@ -76,7 +112,7 @@ const Savings = props => {
                   type="clear"
                   style={{width: 180}}
                   titleStyle={{color: 'black'}}
-                  onPress={() => setCategoryForm(c.name)}></Button>
+                  onPress={(e, value) => changeHandler(c.name)}></Button>
               </View>
             ))}
         </View>
@@ -86,13 +122,6 @@ const Savings = props => {
           value={name}
           onChangeText={setName}
           placeholder="Give your goal a name"
-        />
-        <TextInput
-          autoCapitalize="sentences"
-          style={styles.descriptionText}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Motto"
         />
         <TextInput
           autoCapitalize="none"
@@ -112,9 +141,9 @@ const Savings = props => {
             onChange={(e, date) => setEnd(date)}
           />
         </View>
-        <Button title="Submit" onPress={clickHandler} />
+        <Button title={update} onPress={clickHandler} />
       </View>
-      {/* <View style={styles.bottom} /> */}
+      <View style={styles.bottom} />
     </>
   );
 };
@@ -149,7 +178,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   statusbar: {
-    backgroundColor: 'tomato',
+    backgroundColor: '#41B3A3',
     height: 80,
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
@@ -166,12 +195,14 @@ Savings.navigationOptions = ({navigation}) => ({
 });
 
 const msp = state => ({
-  categories: state.categories,
+  categories: state.allCategories,
   user: state.user,
+  savings: state.savings,
 });
 
 const mdp = dispatch => ({
   postSavings: arg => dispatch(postSavings(arg)),
+  updateSavings: arg => dispatch(updateSavings(arg)),
 });
 
 export default connect(

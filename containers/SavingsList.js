@@ -1,51 +1,62 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView} from 'react-native';
-import {connect} from 'react-redux';
 import ExpenseProgress from '../components/ExpenseProgress';
+import {connect} from 'react-redux';
 
 const SavingList = props => {
-  [date, setDate] = useState(new Date());
-  [savings, setSavings] = useState(props.savings);
-
-  const month = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  const dateConverter = created_at => {
-    const findDate = new Date(created_at);
-    return `${month[findDate.getMonth()]} ${findDate.getFullYear()}`;
+  const addExpToCategories = (category, expense) => {
+    return category.map(cat => {
+      let match = expense.filter(
+        expense =>
+          expense.category_id === cat.id &&
+          new Date(expense.created_at) > new Date(cat.savingStart),
+      );
+      if (match.length > 0) {
+        let total = match.reduce((ac, cv) => ac + cv.amount, 0);
+        return {
+          ...cat,
+          expenses: total,
+        };
+      } else {
+        return {...cat, expenses: 0};
+      }
+    });
   };
 
-  const timeLeft = (start, end) => {
-    const begin = new Date(start);
-    const finish = new Date(end);
-    const utc1 = Date.UTC(
-      begin.getFullYear(),
-      begin.getMonth(),
-      begin.getDate(),
-    );
-    const utc2 = Date.UTC(
-      finish.getFullYear(),
-      finish.getMonth(),
-      finish.getDate(),
-    );
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  const addSavToCategories = (category, savings) => {
+    return category.map(cat => {
+      let match = savings.filter(savings => savings.category_id === cat.id);
+      if (match.length > 0) {
+        let total = match.reduce((ac, cv) => ac + cv.amount, 0);
+        return {
+          ...cat,
+          savings: total,
+          savingID: match[0].id,
+          savingStart: match[0].created_at,
+        };
+      } else {
+        return {...cat, savings: 0};
+      }
+    });
   };
+
+  const monthSavingsAndExpenses = () => {
+    const saving = addSavToCategories(props.categories, props.savings);
+    const exp = addExpToCategories(saving, props.expenses);
+    return exp;
+  };
+
+  console.log('savinglist');
 
   return (
     <ScrollView>
-      <ExpenseProgress />
+      {monthSavingsAndExpenses()
+        ? monthSavingsAndExpenses()
+            .filter(cat => cat.savings > 0)
+            .map(savings => (
+              <ExpenseProgress savings={savings} key={savings.id} />
+            ))
+        : null}
     </ScrollView>
   );
 };
@@ -53,6 +64,7 @@ const SavingList = props => {
 const msp = state => ({
   savings: state.savings,
   categories: state.categories,
+  expenses: state.expenses,
 });
 
 export default connect(msp)(SavingList);

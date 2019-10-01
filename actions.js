@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-const URL = 'http://localhost:3000';
+// const URL = 'http://localhost:3000';
+const URL = 'https://desolate-ridge-78152.herokuapp.com';
 
 const login = user => dispatch => {
   dispatch({type: 'LOADING'});
@@ -119,6 +120,28 @@ const postSavings = saving => dispatch => {
     });
 };
 
+const updateSavings = saving => dispatch => {
+  dispatch({type: 'LOADING'});
+  return fetch(`${URL}/savings`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: saving.token,
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(saving),
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.status) {
+        dispatch({type: 'SAVINGS', payload: data});
+      } else {
+        dispatch({type: 'ERROR', payload: data.message});
+      }
+      dispatch({type: 'DONE_LOADING'});
+    });
+};
+
 const removeExpense = user => dispatch => {
   dispatch({type: 'LOADING'});
   console.log(user);
@@ -152,4 +175,5 @@ export {
   postExpense,
   removeExpense,
   postSavings,
+  updateSavings,
 };

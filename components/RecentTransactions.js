@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {Text, View, StyleSheet, SectionList} from 'react-native';
 import {connect} from 'react-redux';
 import {Button} from 'react-native-elements';
+import ExpenseSection from './ExpenseSection';
 
 const RecentTransactions = props => {
   [recent, setRecent] = useState(props.expenses);
-  const month = [
+  const date = new Date();
+  const months = [
     'January',
     'February',
     'March',
@@ -19,13 +21,16 @@ const RecentTransactions = props => {
     'November',
     'December',
   ];
-  const dateConverter = created_at => {
-    const date = new Date(created_at);
-    return `${month[date.getMonth()].slice(
-      0,
-      3,
-    )} ${date.getDate()} ${date.getFullYear()}`;
+
+  const recentThreeMonths = date => {
+    return [date.getMonth(), date.getMonth() - 1, date.getMonth() - 2];
   };
+
+  const monthExpenses = month =>
+    props.expenses.filter(exp => {
+      const expDate = new Date(exp.created_at);
+      return expDate.getMonth() === month;
+    });
 
   const homeButton = () => {
     props.navigation.navigate('Landing');
@@ -42,18 +47,18 @@ const RecentTransactions = props => {
         />
       </View>
       <View style={styles.container}>
-        <ScrollView>
-          {recent.map(exp => (
-            <View key={exp.id} style={styles.listItem}>
-              <Text style={styles.listText}>{`${dateConverter(
-                exp.created_at,
-              )} - ${exp.name}`}</Text>
-              <Text style={styles.listDescription}>{exp.description}</Text>
-            </View>
+        <View style={styles.sectionList}>
+          {recentThreeMonths(date).map(month => (
+            <ExpenseSection
+              key={month}
+              month={months[month]}
+              year={date.getFullYear()}
+              monthlyExpense={monthExpenses(month)}
+            />
           ))}
-        </ScrollView>
+        </View>
       </View>
-      {/* <View style={styles.bottom} /> */}
+      <View style={styles.bottom} />
     </>
   );
 };
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   statusbar: {
-    backgroundColor: 'tomato',
+    backgroundColor: '#41B3A3',
     height: 80,
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
@@ -89,6 +94,24 @@ const styles = StyleSheet.create({
     width: 100,
     alignSelf: 'flex-start',
   },
+  sectionList: {
+    paddingTop: 22,
+    width: '100%',
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(247,247,247,1.0)',
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 });
 
 const msp = state => ({
@@ -96,7 +119,6 @@ const msp = state => ({
 });
 
 RecentTransactions.navigationOptions = ({navigation}) => ({
-  //   header: null,
   title: 'Recent Transactions',
   headerStyle: {backgroundColor: '#41B3A3', opacity: 1},
 });
