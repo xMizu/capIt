@@ -11,6 +11,7 @@ import {createStore, applyMiddleware} from 'redux';
 import reduxThunk from 'redux-thunk';
 import React from 'react';
 
+console.disableYellowBox = true;
 let store = createStore(rootReducer, applyMiddleware(reduxThunk));
 
 class capIt extends React.Component {

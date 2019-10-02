@@ -71,18 +71,13 @@ const AddExpense = props => {
     <>
       <View style={styles.background}>
         <View style={styles.statusbar}>
-          <Button
-            title="< Home"
-            type="clear"
-            onPress={homeButton}
-            style={styles.homeButton}
-          />
+          <Text onPress={homeButton} style={styles.homeButton}>{`< Home`}</Text>
         </View>
         <View style={styles.expenseContainer}>
-          <KeyboardAvoidingView behavior="padding" style={{flex: 2}}>
+          <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
             <SafeAreaView style={styles.container}>
               <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={{flex: 1, justifyContent: 'flex-end'}}>
+                <View style={{flex: 2, justifyContent: 'flex-end'}}>
                   <View style={styles.expenseList}>
                     <ScrollView>
                       {filteredExpenses().map(exp => (
@@ -117,7 +112,7 @@ const AddExpense = props => {
                       onChangeText={setName}
                       placeholder="Add Name"
                       returnKeyType="next"
-                      placeholderTextColor="#5F5B66"
+                      placeholderTextColor="#797979"
                     />
                     <TextInput
                       style={styles.descriptionText}
@@ -127,7 +122,7 @@ const AddExpense = props => {
                       keyboardType="number-pad"
                       returnKeyType="done"
                       placeholder="Amount"
-                      placeholderTextColor="#5F5B66"
+                      placeholderTextColor="#797979"
                     />
                     {props.errors ? (
                       <Text style={styles.errorText}>{props.errors}</Text>
@@ -138,7 +133,6 @@ const AddExpense = props => {
                       style={{marginVertical: 15}}
                     />
                   </View>
-                  <View style={{flex: 1}} />
                 </View>
               </TouchableWithoutFeedback>
             </SafeAreaView>
@@ -193,16 +187,15 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     fontSize: 20,
-    marginVertical: 10,
-    color: '#3C3744',
+    marginVertical: 20,
+    color: '#474747',
   },
   pickerItem: {
     height: 55,
     color: '#3C3744',
   },
   form: {
-    marginTop: 10,
-    flex: 2,
+    marginTop: 20,
   },
   bottom: {
     backgroundColor: '#41B3A3',
@@ -221,11 +214,14 @@ const styles = StyleSheet.create({
   homeButton: {
     width: 100,
     alignSelf: 'flex-start',
+    color: '#EFEFEF',
+    fontSize: 18,
+    marginLeft: 18,
+    paddingBottom: 10,
   },
 });
 
 AddExpense.navigationOptions = ({navigation}) => ({
-  //   header: null,
   title: 'Add Expense',
   headerStyle: {backgroundColor: '#41B3A3', opacity: 1},
 });

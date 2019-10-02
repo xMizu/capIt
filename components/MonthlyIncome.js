@@ -49,7 +49,12 @@ const MonthlyIncome = props => {
   const data = yearData(months, year).map((amount, index) => ({
     amount: amount,
     month: months[index],
-    svg: {fill: amount >= 0 ? 'green' : 'red'},
+    svg: {
+      fill: amount >= 0 ? '#3BB273' : '#DD614A',
+      onPress: () => {
+        alert(amount);
+      },
+    },
   }));
   console.log('income', data);
 
@@ -76,7 +81,6 @@ const MonthlyIncome = props => {
             gridMin={0}>
             <Grid belowChart={true} />
           </BarChart>
-
           <XAxis
             data={data}
             scale={scale.scaleBand}

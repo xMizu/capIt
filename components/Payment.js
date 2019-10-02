@@ -12,7 +12,6 @@ import {
 import {Button} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {removeError, postIncome} from '../actions';
-import {BarChart, Grid} from 'react-native-svg-charts';
 import MonthlyIncome from './MonthlyIncome';
 
 const Payment = props => {
@@ -40,12 +39,7 @@ const Payment = props => {
     <>
       <View style={styles.container}>
         <View style={styles.statusbar}>
-          <Button
-            title="< Home"
-            type="clear"
-            onPress={homeButton}
-            style={styles.homeButton}
-          />
+          <Text onPress={homeButton} style={styles.homeButton}>{`< Home`}</Text>
         </View>
         <KeyboardAvoidingView behavior="padding" style={{flex: 2}}>
           <SafeAreaView style={styles.container}>
@@ -59,6 +53,7 @@ const Payment = props => {
                   onChangeText={setName}
                   placeholder="What is it for?"
                   returnKeyType="next"
+                  placeholderTextColor="#797979"
                 />
                 <TextInput
                   autoCapitalize="sentences"
@@ -68,6 +63,7 @@ const Payment = props => {
                   keyboardType="number-pad"
                   placeholder="Amount"
                   returnKeyType="done"
+                  placeholderTextColor="#797979"
                 />
                 {props.errors ? (
                   <Text style={styles.errorText}>{props.errors}</Text>
@@ -97,12 +93,17 @@ const styles = StyleSheet.create({
   homeButton: {
     width: 100,
     alignSelf: 'flex-start',
+    color: '#EFEFEF',
+    fontSize: 18,
+    marginLeft: 18,
+    paddingBottom: 10,
   },
   descriptionText: {
     width: '100%',
     textAlign: 'center',
     fontSize: 24,
     marginVertical: 15,
+    color: '#474747',
   },
   bottom: {
     backgroundColor: '#41B3A3',

@@ -108,6 +108,7 @@ const logout = dispatch => {
     dispatch({type: 'NO_TOKEN'});
     dispatch({type: 'REMOVE_USER'});
     dispatch({type: 'NO_INCOMES'});
+    dispatch({type: 'NO_BALANCE'});
     dispatch({type: 'NO_SAVINGS'});
     dispatch({type: 'NO_EXPENSES'});
     dispatch({type: 'NO_CATEGORIES'});
@@ -154,7 +155,13 @@ const postSavings = saving => dispatch => {
     .then(res => res.json())
     .then(data => {
       if (!data.status) {
-        dispatch({type: 'SAVINGS', payload: data});
+        dispatch({type: 'BALANCE', payload: data.balance});
+        dispatch({type: 'GET_USER', payload: data});
+        dispatch({type: 'INCOMES', payload: data.incomes});
+        dispatch({type: 'SAVINGS', payload: data.savings});
+        dispatch({type: 'EXPENSES', payload: data.expenses});
+        dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
       }
@@ -175,7 +182,6 @@ const postIncome = income => dispatch => {
   })
     .then(res => res.json())
     .then(data => {
-      debugger;
       if (!data.status) {
         dispatch({type: 'BALANCE', payload: data.balance});
         dispatch({type: 'GET_USER', payload: data});
@@ -205,7 +211,13 @@ const updateSavings = saving => dispatch => {
     .then(res => res.json())
     .then(data => {
       if (!data.status) {
-        dispatch({type: 'SAVINGS', payload: data});
+        dispatch({type: 'BALANCE', payload: data.balance});
+        dispatch({type: 'GET_USER', payload: data});
+        dispatch({type: 'INCOMES', payload: data.incomes});
+        dispatch({type: 'SAVINGS', payload: data.savings});
+        dispatch({type: 'EXPENSES', payload: data.expenses});
+        dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
       }
@@ -219,6 +231,7 @@ const removeExpense = user => dispatch => {
   return fetch(`${URL}/expenses/${user.id}`, {
     method: 'DELETE',
     headers: {
+      Authorization: user.token,
       'content-type': 'application/json',
       accept: 'application/json',
     },
@@ -227,7 +240,42 @@ const removeExpense = user => dispatch => {
     .then(res => res.json())
     .then(data => {
       if (!data.status) {
-        dispatch({type: 'EXPENSES', payload: data});
+        dispatch({type: 'BALANCE', payload: data.balance});
+        dispatch({type: 'GET_USER', payload: data});
+        dispatch({type: 'INCOMES', payload: data.incomes});
+        dispatch({type: 'SAVINGS', payload: data.savings});
+        dispatch({type: 'EXPENSES', payload: data.expenses});
+        dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'NO_ERROR'});
+      } else {
+        dispatch({type: 'ERROR', payload: data.message});
+      }
+      dispatch({type: 'DONE_LOADING'});
+    });
+};
+
+const removeIncome = user => dispatch => {
+  dispatch({type: 'LOADING'});
+  console.log(user);
+  return fetch(`${URL}/incomes/${user.id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: user.token,
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+    body: user,
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.status) {
+        dispatch({type: 'BALANCE', payload: data.balance});
+        dispatch({type: 'GET_USER', payload: data});
+        dispatch({type: 'INCOMES', payload: data.incomes});
+        dispatch({type: 'SAVINGS', payload: data.savings});
+        dispatch({type: 'EXPENSES', payload: data.expenses});
+        dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
       }
@@ -250,4 +298,5 @@ export {
   signup,
   removeError,
   postIncome,
+  removeIncome,
 };

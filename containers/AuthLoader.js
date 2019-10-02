@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {getToken, fetchUser} from '../actions';
+import {getToken, fetchUser, fetchCategories} from '../actions';
 import AsyncStorage from '@react-native-community/async-storage';
 
 class AuthLoader extends React.Component {
@@ -12,8 +12,13 @@ class AuthLoader extends React.Component {
   async tokenAsync() {
     const userToken = await AsyncStorage.getItem('id_token');
     this.props.getToken(userToken);
-    userToken ? this.props.fetchUser(userToken) : null;
+    userToken ? this.fetchInfo(userToken) : null;
     this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+  }
+
+  fetchInfo(userToken) {
+    this.props.fetchUser(userToken);
+    this.props.fetchCategories();
   }
 
   render() {
@@ -38,6 +43,7 @@ const mdp = dispatch => {
   return {
     getToken: arg => dispatch(getToken(arg)),
     fetchUser: arg => dispatch(fetchUser(arg, dispatch)),
+    fetchCategories: () => dispatch(fetchCategories),
   };
 };
 

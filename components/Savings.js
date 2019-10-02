@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TextInput, KeyboardAvoidingView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Text,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
-import {
-  postSavings,
-  updateSavings,
-  removeError,
-  removeExpense,
-} from '../actions';
+import {postSavings, updateSavings, removeError} from '../actions';
 import {Button} from 'react-native-elements';
 
 const Savings = props => {
@@ -32,6 +33,7 @@ const Savings = props => {
         name,
         end,
         user_id: props.user.id,
+        token: props.token,
       };
       props.updateSavings(savings).then(() => {
         setEnd(new Date());
@@ -48,6 +50,7 @@ const Savings = props => {
           name,
           end,
           user_id: props.user.id,
+          token: props.token,
         };
         props.postSavings(savings).then(() => {
           setEnd(new Date());
@@ -89,12 +92,7 @@ const Savings = props => {
   return (
     <>
       <View style={styles.statusbar}>
-        <Button
-          title="< Home"
-          type="clear"
-          onPress={homeButton}
-          style={styles.homeButton}
-        />
+        <Text onPress={homeButton} style={styles.homeButton}>{`< Home`}</Text>
       </View>
       <View style={styles.container}>
         <View style={styles.form}>
@@ -106,7 +104,7 @@ const Savings = props => {
             placeholder="Input Category"
             returnKeyType="next"
             autoCapitalize="none"
-            placeholderTextColor="#3C3744"
+            placeholderTextColor="#797979"
             clearButtonMode="while-editing"
           />
           <View style={styles.categoryList}>
@@ -130,7 +128,7 @@ const Savings = props => {
             value={name}
             onChangeText={setName}
             placeholder="Give your goal a name"
-            placeholderTextColor="#3C3744"
+            placeholderTextColor="#797979"
           />
           <TextInput
             autoCapitalize="none"
@@ -140,7 +138,7 @@ const Savings = props => {
             keyboardType="number-pad"
             returnKeyType="done"
             placeholder="Amount"
-            placeholderTextColor="#3C3744"
+            placeholderTextColor="#797979"
           />
           {props.errors ? (
             <Text style={styles.errorText}>{props.errors}</Text>
@@ -177,11 +175,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontSize: 24,
     textAlign: 'center',
+    color: '#474747',
   },
   amountText: {
     marginVertical: 15,
     fontSize: 24,
     textAlign: 'center',
+    color: '#474747',
   },
   categoryList: {
     flexWrap: 'wrap',
@@ -203,6 +203,10 @@ const styles = StyleSheet.create({
   homeButton: {
     width: 100,
     alignSelf: 'flex-start',
+    color: '#EFEFEF',
+    fontSize: 18,
+    marginLeft: 18,
+    paddingBottom: 10,
   },
 });
 
@@ -215,6 +219,7 @@ const msp = state => ({
   categories: state.allCategories,
   user: state.user,
   savings: state.savings,
+  token: state.token,
 });
 
 const mdp = dispatch => ({

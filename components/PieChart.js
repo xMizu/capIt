@@ -5,7 +5,7 @@ import {Dimensions, View, Text} from 'react-native';
 
 const PieChartExample = props => {
   [label, setLabel] = useState('Balance');
-  [value, setValue] = useState(props.balance);
+  [value, setValue] = useState(0);
   [labelWidth, setLabelWidth] = useState(0);
   const date = new Date().getMonth();
   const monthExpenses = props.expenses.filter(exp => {
@@ -14,7 +14,18 @@ const PieChartExample = props => {
     return hello === date;
   });
 
-  const colors = ['#600080', '#9900cc', '#c61aff', '#d966ff', '#ecb3ff'];
+  const colors = [
+    '#4D9DE0',
+    '#E15554',
+    '#E1BC29',
+    '#3BB273',
+    '#7768AE',
+    '#77B6EA',
+    '#395C6B',
+    '#80A4ED',
+    '#E87EA1',
+    '#EE2677',
+  ];
 
   const deviceWidth = Dimensions.get('window').width;
 
@@ -60,8 +71,12 @@ const PieChartExample = props => {
           left: deviceWidth / 2 - labelWidth / 2,
           textAlign: 'center',
           color: '#3C3744',
+        }}
+        onPress={() => {
+          setLabel('Balance');
+          setValue(0);
         }}>
-        {`${label} \n $ ${props.balance}`}
+        {`${label} \n $ ${value ? value : props.balance}`}
       </Text>
     </View>
   );

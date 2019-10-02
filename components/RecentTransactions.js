@@ -32,6 +32,12 @@ const RecentTransactions = props => {
       return expDate.getMonth() === month;
     });
 
+  const monthIncomes = month =>
+    props.incomes.filter(inc => {
+      const incDate = new Date(inc.created_at);
+      return incDate.getMonth() === month;
+    });
+
   const homeButton = () => {
     props.navigation.navigate('Landing');
   };
@@ -40,12 +46,7 @@ const RecentTransactions = props => {
     <>
       <View style={styles.background}>
         <View style={styles.statusbar}>
-          <Button
-            title="< Home"
-            type="clear"
-            onPress={homeButton}
-            style={styles.homeButton}
-          />
+          <Text onPress={homeButton} style={styles.homeButton}>{`< Home`}</Text>
         </View>
         <View style={styles.container}>
           <View style={styles.sectionList}>
@@ -55,6 +56,7 @@ const RecentTransactions = props => {
                 month={months[month]}
                 year={date.getFullYear()}
                 monthlyExpense={monthExpenses(month)}
+                monthlyIncome={monthIncomes(month)}
               />
             ))}
           </View>
@@ -99,6 +101,10 @@ const styles = StyleSheet.create({
   homeButton: {
     width: 100,
     alignSelf: 'flex-start',
+    color: '#EFEFEF',
+    fontSize: 18,
+    marginLeft: 18,
+    paddingBottom: 10,
   },
   sectionList: {
     paddingTop: 22,
@@ -113,6 +119,7 @@ const styles = StyleSheet.create({
 
 const msp = state => ({
   expenses: state.expenses,
+  incomes: state.incomes,
 });
 
 RecentTransactions.navigationOptions = ({navigation}) => ({

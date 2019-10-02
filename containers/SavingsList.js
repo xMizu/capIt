@@ -1,5 +1,5 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView, StyleSheet, View, Button, Text} from 'react-native';
 import ExpenseProgress from '../components/ExpenseProgress';
 import {connect} from 'react-redux';
 
@@ -33,6 +33,7 @@ const SavingList = props => {
           savings: total,
           savingID: match[0].id,
           savingStart: match[0].created_at,
+          end: match[0].end,
         };
       } else {
         return {...cat, savings: 0};

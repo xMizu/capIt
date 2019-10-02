@@ -1,21 +1,34 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, Dimensions, ActionSheetIOS} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import PieChartExample from '../components/PieChart';
 import {Button} from 'react-native-elements';
-import {logout, fetchUser, fetchCategories} from '../actions';
+import {logout} from '../actions';
+import RNShake from 'react-native-shake';
 
 const Landing = props => {
   useEffect(() => {
-    props.fetchCategories();
+    RNShake.addEventListener('ShakeEvent', () => {
+      action();
+    });
   }, []);
+
+  const action = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Cancel', 'Logout'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          logUserout();
+          /* destructive action */
+        }
+      },
+    );
+  };
 
   const logUserout = () => {
     props.logout();
@@ -47,9 +60,9 @@ const Landing = props => {
             {props.user ? `Welcome \n ${props.user.name}` : null}
           </Text>
         </View>
-        <TouchableOpacity onPress={() => logUserout(props)}>
+        {/* <TouchableOpacity onPress={() => logUserout(props)}>
           <Text>Log Out</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View style={styles.pie}>
           <PieChartExample balance={props.balance} />
         </View>
@@ -80,8 +93,6 @@ const Landing = props => {
           />
         </View>
       </View>
-
-      {/* </View> */}
       <View style={styles.bottom} />
     </>
   );
@@ -138,23 +149,25 @@ const styles = StyleSheet.create({
   },
   recentTransactions: {
     position: 'absolute',
+    top: -20,
     width: 130,
     left: Dimensions.get('window').width / 2 + 25,
   },
   savings: {
     position: 'absolute',
+    top: -20,
     width: 130,
     left: Dimensions.get('window').width / 2 - 150,
   },
   addExpense: {
     position: 'absolute',
-    top: 120,
+    top: 80,
     width: 130,
     left: Dimensions.get('window').width / 2 + 25,
   },
   payment: {
     position: 'absolute',
-    top: 120,
+    top: 80,
     width: 130,
     left: Dimensions.get('window').width / 2 - 150,
   },
@@ -166,9 +179,7 @@ const msp = state => {
 
 const mdp = dispatch => {
   return {
-    fetchUser: arg => dispatch(fetchUser(arg, dispatch)),
     logout: dispatch(logout),
-    fetchCategories: () => dispatch(fetchCategories),
   };
 };
 
