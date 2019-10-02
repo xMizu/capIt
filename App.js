@@ -66,10 +66,10 @@ const AppStack = createMaterialTopTabNavigator(
       showLabel: false,
       tabStyle: {
         height: 80,
-        backgroundColor: '#41B3A3',
+        backgroundColor: '#17BEBB',
       },
       indicatorStyle: {
-        backgroundColor: 'white',
+        backgroundColor: '#17BEBB',
       },
     },
   },
@@ -112,7 +112,7 @@ const App = props => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: 'white',
+    // backgroundColor: '#41B3A3',
     justifyContent: 'center',
   },
 });

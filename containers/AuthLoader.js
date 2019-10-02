@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {getToken} from '../actions';
+import {getToken, fetchUser} from '../actions';
 import AsyncStorage from '@react-native-community/async-storage';
 
 class AuthLoader extends React.Component {
@@ -12,6 +12,7 @@ class AuthLoader extends React.Component {
   async tokenAsync() {
     const userToken = await AsyncStorage.getItem('id_token');
     this.props.getToken(userToken);
+    userToken ? this.props.fetchUser(userToken) : null;
     this.props.navigation.navigate(userToken ? 'App' : 'Auth');
   }
 
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
 const mdp = dispatch => {
   return {
     getToken: arg => dispatch(getToken(arg)),
+    fetchUser: arg => dispatch(fetchUser(arg, dispatch)),
   };
 };
 

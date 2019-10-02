@@ -38,32 +38,38 @@ const RecentTransactions = props => {
 
   return (
     <>
-      <View style={styles.statusbar}>
-        <Button
-          title="< Home"
-          type="clear"
-          onPress={homeButton}
-          style={styles.homeButton}
-        />
-      </View>
-      <View style={styles.container}>
-        <View style={styles.sectionList}>
-          {recentThreeMonths(date).map(month => (
-            <ExpenseSection
-              key={month}
-              month={months[month]}
-              year={date.getFullYear()}
-              monthlyExpense={monthExpenses(month)}
-            />
-          ))}
+      <View style={styles.background}>
+        <View style={styles.statusbar}>
+          <Button
+            title="< Home"
+            type="clear"
+            onPress={homeButton}
+            style={styles.homeButton}
+          />
         </View>
+        <View style={styles.container}>
+          <View style={styles.sectionList}>
+            {recentThreeMonths(date).map(month => (
+              <ExpenseSection
+                key={month}
+                month={months[month]}
+                year={date.getFullYear()}
+                monthlyExpense={monthExpenses(month)}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={styles.bottom} />
       </View>
-      <View style={styles.bottom} />
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor: '#EFEFEF',
+    flex: 1,
+  },
   container: {
     alignItems: 'center',
     flex: 1,
@@ -97,15 +103,6 @@ const styles = StyleSheet.create({
   sectionList: {
     paddingTop: 22,
     width: '100%',
-  },
-  sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
   },
   item: {
     padding: 10,

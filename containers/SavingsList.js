@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import ExpenseProgress from '../components/ExpenseProgress';
 import {connect} from 'react-redux';
 
@@ -49,18 +49,33 @@ const SavingList = props => {
   console.log('savinglist');
 
   return (
-    <ScrollView>
-      {monthSavingsAndExpenses()
-        ? monthSavingsAndExpenses()
-            .filter(cat => cat.savings > 0)
-            .map(savings => (
-              <ExpenseProgress savings={savings} key={savings.id} />
-            ))
-        : null}
-    </ScrollView>
+    <>
+      <View style={styles.background}>
+        <ScrollView>
+          {monthSavingsAndExpenses()
+            ? monthSavingsAndExpenses()
+                .filter(cat => cat.savings > 0)
+                .map(savings => (
+                  <ExpenseProgress savings={savings} key={savings.id} />
+                ))
+            : null}
+        </ScrollView>
+      </View>
+      <View style={styles.bottom} />
+    </>
   );
 };
 
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: '#EFEFEF',
+  },
+  bottom: {
+    backgroundColor: '#17BEBB',
+    height: 50,
+  },
+});
 const msp = state => ({
   savings: state.savings,
   categories: state.categories,

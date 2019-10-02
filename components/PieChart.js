@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {PieChart} from 'react-native-svg-charts';
 import {Dimensions, View, Text} from 'react-native';
@@ -13,6 +13,7 @@ const PieChartExample = props => {
     const hello = expDate.getMonth();
     return hello === date;
   });
+
   const colors = ['#600080', '#9900cc', '#c61aff', '#d966ff', '#ecb3ff'];
 
   const deviceWidth = Dimensions.get('window').width;
@@ -29,6 +30,8 @@ const PieChartExample = props => {
     },
     key: `pie-${exp.id}`,
   }));
+
+  console.log('pie', props);
   return (
     <View style={{justifyContent: 'center'}}>
       <PieChart
@@ -56,8 +59,9 @@ const PieChartExample = props => {
           position: 'absolute',
           left: deviceWidth / 2 - labelWidth / 2,
           textAlign: 'center',
+          color: '#3C3744',
         }}>
-        {`${label} \n ${value}`}
+        {`${label} \n $ ${props.balance}`}
       </Text>
     </View>
   );
@@ -67,7 +71,6 @@ const msp = state => {
   return {
     expenses: state.expenses,
     user: state.user,
-    balance: state.balance,
   };
 };
 

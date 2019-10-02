@@ -8,7 +8,13 @@ const ExpenseProgress = props => {
   return (
     <>
       <View key={props.savings.id} style={{marginVertical: 10}}>
-        <Text style={{fontSize: 24, textAlign: 'center', marginVertical: 5}}>
+        <Text
+          style={{
+            fontSize: 24,
+            textAlign: 'center',
+            marginVertical: 5,
+            color: '#3C3744',
+          }}>
           {props.savings.name}
         </Text>
         <ProgressCircle
@@ -23,22 +29,29 @@ const ExpenseProgress = props => {
               ? props.savings.expenses / props.savings.savings
               : 1
           }
-          progressColor={'rgb(134, 65, 244)'}
+          progressColor={
+            props.savings.savings - props.savings.expenses > 0
+              ? '#A5FFD6'
+              : '#FFA69E'
+          }
           startAngle={-Math.PI}
           endAngle={Math.PI}
         />
         <Text
           style={{
+            zIndex: 30,
             fontSize: 24,
             position: 'absolute',
             textAlign: 'center',
-            width: '100%',
-            top: 115,
+            alignSelf: 'center',
+            width: 180,
+            top: 125,
             color:
               props.savings.savings - props.savings.expenses > 0
-                ? 'green'
-                : 'red',
-          }}>
+                ? '#84DCC6'
+                : '#FF686B',
+          }}
+          onPress={() => alert('hello')}>
           {`$ ${props.savings.savings - props.savings.expenses}`}
         </Text>
       </View>

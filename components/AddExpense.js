@@ -7,9 +7,18 @@ import {
   TextInput,
   ScrollView,
   ActionSheetIOS,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {fetchCategories, postExpense, removeExpense} from '../actions';
+import {
+  fetchCategories,
+  postExpense,
+  removeExpense,
+  removeError,
+} from '../actions';
 import {Button} from 'react-native-elements';
 
 const AddExpense = props => {
@@ -18,12 +27,12 @@ const AddExpense = props => {
   const [amount, setAmount] = useState('');
   const [name, setName] = useState('');
 
-  filteredExpenses = () => {
+  const filteredExpenses = () => {
     return props.expenses.filter(exp => exp.category_id === item);
   };
 
-  clickHandler = () => {
-    expense = {
+  const clickHandler = () => {
+    const expense = {
       user_id: props.user.id,
       name: name,
       description: description,
@@ -54,71 +63,89 @@ const AddExpense = props => {
   };
 
   const homeButton = () => {
+    props.removeError();
     props.navigation.navigate('Landing');
   };
 
   return (
     <>
-      <View style={styles.statusbar}>
-        <Button
-          title="< Home"
-          type="clear"
-          onPress={homeButton}
-          style={styles.homeButton}
-        />
-      </View>
-      <View style={styles.expenseContainer}>
-        <View style={styles.expenseList}>
-          <ScrollView>
-            {filteredExpenses().map(exp => (
-              <Text
-                style={styles.text}
-                key={`expense-${exp.id}`}
-                onPress={() =>
-                  action(exp)
-                }>{`${exp.name} - ${exp.amount}`}</Text>
-            ))}
-          </ScrollView>
-        </View>
-        <View>
-          <Text style={styles.text}>Categories</Text>
-        </View>
-        <Picker
-          selectedValue={item}
-          onValueChange={item => setItem(item)}
-          style={styles.picker}>
-          {props.categories.map(c => (
-            <Picker.Item
-              label={c.name}
-              value={c.id}
-              key={`category -${c.id}`}
-            />
-          ))}
-        </Picker>
-        <View style={styles.form}>
-          <TextInput
-            autoCapitalize="sentences"
-            style={styles.descriptionText}
-            value={name}
-            onChangeText={setName}
-            placeholder="add name"
-            returnKeyType="next"
+      <View style={styles.background}>
+        <View style={styles.statusbar}>
+          <Button
+            title="< Home"
+            type="clear"
+            onPress={homeButton}
+            style={styles.homeButton}
           />
-          <TextInput
-            autoCapitalize="sentences"
-            style={styles.descriptionText}
-            value={amount}
-            onChangeText={setAmount}
-            keyboardType={'numeric'}
-            placeholder="add amount"
-          />
-          {props.errors ? (
-            <Text style={styles.errorText}>{props.errors}</Text>
-          ) : null}
-          <Button title="Submit" onPress={clickHandler} />
         </View>
-        <View style={styles.bottom} />
+        <View style={styles.expenseContainer}>
+          <KeyboardAvoidingView behavior="padding" style={{flex: 2}}>
+            <SafeAreaView style={styles.container}>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={{flex: 1, justifyContent: 'flex-end'}}>
+                  <View style={styles.expenseList}>
+                    <ScrollView>
+                      {filteredExpenses().map(exp => (
+                        <Text
+                          style={styles.text}
+                          key={`expense-${exp.id}`}
+                          onPress={() =>
+                            action(exp)
+                          }>{`${exp.name} - ${exp.amount}`}</Text>
+                      ))}
+                    </ScrollView>
+                  </View>
+                  <Text style={styles.text}>Categories</Text>
+                  <Picker
+                    selectedValue={item}
+                    onValueChange={item => setItem(item)}
+                    style={styles.picker}
+                    itemStyle={styles.pickerItem}>
+                    {props.categories.map(c => (
+                      <Picker.Item
+                        label={c.name}
+                        value={c.id}
+                        key={`category -${c.id}`}
+                      />
+                    ))}
+                  </Picker>
+                  <View style={styles.form}>
+                    <TextInput
+                      autoCapitalize="sentences"
+                      style={styles.descriptionText}
+                      value={name}
+                      onChangeText={setName}
+                      placeholder="Add Name"
+                      returnKeyType="next"
+                      placeholderTextColor="#5F5B66"
+                    />
+                    <TextInput
+                      style={styles.descriptionText}
+                      value={amount}
+                      onChangeText={setAmount}
+                      keyboardType={'numeric'}
+                      keyboardType="number-pad"
+                      returnKeyType="done"
+                      placeholder="Amount"
+                      placeholderTextColor="#5F5B66"
+                    />
+                    {props.errors ? (
+                      <Text style={styles.errorText}>{props.errors}</Text>
+                    ) : null}
+                    <Button
+                      title="Submit"
+                      onPress={clickHandler}
+                      style={{marginVertical: 15}}
+                    />
+                  </View>
+                  <View style={{flex: 1}} />
+                </View>
+              </TouchableWithoutFeedback>
+            </SafeAreaView>
+          </KeyboardAvoidingView>
+        </View>
       </View>
+      <View style={styles.bottom} />
     </>
   );
 };
@@ -135,30 +162,43 @@ const mdp = dispatch => ({
   fetchCategories: () => dispatch(fetchCategories),
   postExpense: arg => dispatch(postExpense(arg)),
   removeExpense: arg => dispatch(removeExpense(arg)),
+  removeError: dispatch(removeError),
 });
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor: '#EFEFEF',
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+  },
   text: {
     fontSize: 24,
     textAlign: 'center',
+    marginVertical: 15,
+    color: '#3C3744',
   },
   picker: {
     width: '100%',
-    // backgroundColor: 'green',
-    justifyContent: 'center',
-    flex: 2,
+    height: 44,
   },
   expenseList: {
     flex: 2,
   },
   expenseContainer: {
-    flex: 1,
+    flexGrow: 1,
   },
   descriptionText: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 20,
     marginVertical: 10,
+    color: '#3C3744',
+  },
+  pickerItem: {
+    height: 55,
+    color: '#3C3744',
   },
   form: {
     marginTop: 10,

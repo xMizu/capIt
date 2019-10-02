@@ -11,6 +11,7 @@ let defaultState = {
   categories: [],
   savings: [],
   balance: 0,
+  incomes: [],
 };
 
 function fetchUser(state = defaultState.user, action) {
@@ -101,6 +102,17 @@ const savingsHandler = (state = defaultState.savings, action) => {
   }
 };
 
+const incomehandler = (state = defaultState.incomes, action) => {
+  switch (action.type) {
+    case 'INCOMES':
+      return action.payload;
+    case 'NO_INCOMES':
+      return [];
+    default:
+      return state;
+  }
+};
+
 const tokenHandler = (state = defaultState.token, action) => {
   switch (action.type) {
     case 'TOKEN':
@@ -134,6 +146,7 @@ const rootReducer = combineReducers({
   allCategories: allCategoriesHandler,
   savings: savingsHandler,
   balance: balanceHandler,
+  incomes: incomehandler,
 });
 
 export default rootReducer;

@@ -14,7 +14,6 @@ import {logout, fetchUser, fetchCategories} from '../actions';
 
 const Landing = props => {
   useEffect(() => {
-    props.fetchUser(props.token);
     props.fetchCategories();
   }, []);
 
@@ -52,17 +51,17 @@ const Landing = props => {
           <Text>Log Out</Text>
         </TouchableOpacity>
         <View style={styles.pie}>
-          <PieChartExample />
+          <PieChartExample balance={props.balance} />
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            title="Recent"
+            title="Purchases"
             type="outline"
             style={styles.recentTransactions}
             onPress={recentTransactions}
           />
           <Button
-            title="Expenses"
+            title="Expense"
             type="outline"
             style={styles.addExpense}
             onPress={addExpense}
@@ -94,10 +93,11 @@ Landing.navigationOptions = ({navigation}) => ({
 });
 
 const styles = StyleSheet.create({
-  text: {fontSize: 24, textAlign: 'center'},
+  text: {fontSize: 24, textAlign: 'center', color: '#3C3744'},
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#EFEFEF',
   },
   textContainer: {
     justifyContent: 'center',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   bottom: {
-    backgroundColor: '#41B3A3',
+    backgroundColor: '#17BEBB',
     height: 50,
   },
   pie: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 });
 
 const msp = state => {
-  return {user: state.user, token: state.token};
+  return {user: state.user, token: state.token, balance: state.balance};
 };
 
 const mdp = dispatch => {

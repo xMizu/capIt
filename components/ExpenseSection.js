@@ -35,12 +35,14 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     fontSize: 14,
     fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
+    backgroundColor: '#49C6E5',
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
+    borderWidth: 0.5,
+    borderColor: 'grey',
   },
 });
 

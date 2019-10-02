@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {signup, removeError} from '../actions';
+import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SignUp = props => {
   const [username, setUsername] = useState('');
@@ -13,60 +16,69 @@ const SignUp = props => {
   const [name, setName] = useState('');
 
   const clickHandler = () => {
-    fetch('http://localhost:3000/signup', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: name,
-        username: username,
-        password: password,
-        balance: 0,
-      }),
-      headers: {
-        'content-type': 'application/json',
-        accept: 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+    const user = {
+      username: username,
+      password: password,
+      name: name,
+      balance: 0,
+    };
+    props.signup(user).then(async () => {
+      const token = await AsyncStorage.getItem('id_token');
+      props.navigation.navigate(token ? 'App' : 'SignUp');
+    });
   };
 
   return (
     <>
-      <View style={styles.form}>
-        <Text style={styles.logo}>Welcome</Text>
-        <Text style={styles.labels}>Username</Text>
-        <TextInput
-          placeholder="Username"
-          onChangeText={setUsername}
-          value={username}
-          style={(styles.labels, styles.inputs)}
-        />
-        <Text style={styles.labels}>Name</Text>
-        <TextInput
-          placeholder="Name"
-          onChangeText={setName}
-          value={name}
-          style={(styles.labels, styles.inputs)}
-        />
-        <Text style={styles.labels}>Password</Text>
-        <TextInput
-          placeholder="Password"
-          onChangeText={setPassword}
-          value={password}
-          style={(styles.labels, styles.inputs)}
-          secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.button} onPress={clickHandler}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.signUpText}>
-        <Text>Already have an account?</Text>
-        <TouchableOpacity
-          style={styles.signUpButton}
-          onPress={() => props.navigation.navigate('Login')}>
-          <Text style={styles.signUp}>Log In</Text>
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.form}>
+          <Text style={styles.logo}>Welcome</Text>
+          {props.errors ? (
+            <Text style={styles.errorText}>{props.errors}</Text>
+          ) : null}
+          <Text style={styles.labels}>Username</Text>
+          <TextInput
+            placeholder="Username"
+            onChangeText={setUsername}
+            value={username}
+            style={(styles.labels, styles.inputs)}
+            placeholderTextColor="#5F5B66"
+            returnKeyType="next"
+          />
+          <Text style={styles.labels}>Name</Text>
+          <TextInput
+            placeholder="Name"
+            onChangeText={setName}
+            value={name}
+            style={(styles.labels, styles.inputs)}
+            placeholderTextColor="#5F5B66"
+            returnKeyType="next"
+          />
+          <Text style={styles.labels}>Password</Text>
+          <TextInput
+            placeholder="Password"
+            onChangeText={setPassword}
+            value={password}
+            style={(styles.labels, styles.inputs)}
+            secureTextEntry={true}
+            placeholderTextColor="#5F5B66"
+            returnKeyType="done"
+          />
+          <TouchableOpacity style={styles.button} onPress={clickHandler}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpText}>
+          <Text>Already have an account?</Text>
+          <TouchableOpacity
+            style={styles.signUpButton}
+            onPress={() => {
+              props.removeError();
+              props.navigation.navigate('Login');
+            }}>
+            <Text style={styles.signUp}>Log In</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -77,6 +89,11 @@ SignUp.navigationOptions = ({navigation}) => ({
 });
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#41B3A3',
+    flex: 1,
+  },
+
   form: {
     flexGrow: 1,
     justifyContent: 'flex-end',
@@ -85,13 +102,14 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'solid',
     marginVertical: 5,
     width: '100%',
-    color: 'lightgrey',
+    color: '#3C3744',
+    fontSize: 18,
     textAlign: 'center',
   },
   labels: {
     textAlign: 'center',
-    color: 'white',
-    fontSize: 16,
+    color: '#E5F4E3',
+    fontSize: 22,
     width: '100%',
   },
   logo: {
@@ -100,7 +118,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 20,
   },
   button: {
     alignSelf: 'center',
@@ -120,6 +138,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
   },
+  errorText: {
+    textAlign: 'center',
+    color: 'red',
+  },
 });
 
-export default SignUp;
+const mdp = dispatch => ({
+  signup: arg => dispatch(signup(arg)),
+  removeError: dispatch(removeError),
+});
+
+const msp = state => ({
+  errors: state.errors,
+});
+
+export default connect(
+  msp,
+  mdp,
+)(SignUp);

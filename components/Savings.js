@@ -1,8 +1,13 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TextInput, KeyboardAvoidingView} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
-import {postSavings, updateSavings} from '../actions';
+import {
+  postSavings,
+  updateSavings,
+  removeError,
+  removeExpense,
+} from '../actions';
 import {Button} from 'react-native-elements';
 
 const Savings = props => {
@@ -77,6 +82,7 @@ const Savings = props => {
   };
 
   const homeButton = () => {
+    props.removeError();
     props.navigation.navigate('Landing');
   };
   console.log('saving', props);
@@ -90,58 +96,65 @@ const Savings = props => {
           style={styles.homeButton}
         />
       </View>
-      <View style={styles.form}>
-        <TextInput
-          autoCapitalize="sentences"
-          style={styles.descriptionText}
-          value={categoryForm}
-          onChangeText={changeHandler}
-          placeholder="Input Category"
-          returnKeyType="next"
-          autoCapitalize="none"
-        />
-        <View style={styles.categoryList}>
-          {props.categories
-            .filter(c =>
-              c.name.toLowerCase().includes(categoryForm.toLowerCase()),
-            )
-            .map(c => (
-              <View key={c.id} style={styles.button}>
-                <Button
-                  title={c.name}
-                  type="clear"
-                  style={{width: 180}}
-                  titleStyle={{color: 'black'}}
-                  onPress={(e, value) => changeHandler(c.name)}></Button>
-              </View>
-            ))}
-        </View>
-        <TextInput
-          autoCapitalize="sentences"
-          style={styles.descriptionText}
-          value={name}
-          onChangeText={setName}
-          placeholder="Give your goal a name"
-        />
-        <TextInput
-          autoCapitalize="none"
-          style={styles.amountText}
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType={'numeric'}
-          placeholder="Amount"
-        />
-        {props.errors ? (
-          <Text style={styles.errorText}>{props.errors}</Text>
-        ) : null}
-        <View style={styles.datePicker}>
-          <DateTimePicker
-            value={end}
-            is24Hour={true}
-            onChange={(e, date) => setEnd(date)}
+      <View style={styles.container}>
+        <View style={styles.form}>
+          <TextInput
+            autoCapitalize="sentences"
+            style={styles.descriptionText}
+            value={categoryForm}
+            onChangeText={changeHandler}
+            placeholder="Input Category"
+            returnKeyType="next"
+            autoCapitalize="none"
+            placeholderTextColor="#3C3744"
+            clearButtonMode="while-editing"
           />
+          <View style={styles.categoryList}>
+            {props.categories
+              .filter(c =>
+                c.name.toLowerCase().includes(categoryForm.toLowerCase()),
+              )
+              .map(c => (
+                <View key={c.id} style={styles.button}>
+                  <Button
+                    title={c.name}
+                    type="clear"
+                    titleStyle={{color: '#3C3744'}}
+                    onPress={(e, value) => changeHandler(c.name)}></Button>
+                </View>
+              ))}
+          </View>
+          <TextInput
+            autoCapitalize="sentences"
+            style={styles.descriptionText}
+            value={name}
+            onChangeText={setName}
+            placeholder="Give your goal a name"
+            placeholderTextColor="#3C3744"
+          />
+          <TextInput
+            autoCapitalize="none"
+            style={styles.amountText}
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="number-pad"
+            returnKeyType="done"
+            placeholder="Amount"
+            placeholderTextColor="#3C3744"
+          />
+          {props.errors ? (
+            <Text style={styles.errorText}>{props.errors}</Text>
+          ) : null}
+          <KeyboardAvoidingView enabled>
+            <DateTimePicker
+              value={end}
+              onChange={(e, date) => setEnd(date)}
+              display="default"
+              mode="date"
+            />
+            <Button title={update} onPress={clickHandler} />
+          </KeyboardAvoidingView>
         </View>
-        <Button title={update} onPress={clickHandler} />
       </View>
       <View style={styles.bottom} />
     </>
@@ -149,6 +162,10 @@ const Savings = props => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#EFEFEF',
+    flex: 1,
+  },
   form: {
     flex: 1,
   },
@@ -203,6 +220,7 @@ const msp = state => ({
 const mdp = dispatch => ({
   postSavings: arg => dispatch(postSavings(arg)),
   updateSavings: arg => dispatch(updateSavings(arg)),
+  removeError: dispatch(removeError),
 });
 
 export default connect(
