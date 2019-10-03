@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-const URL = 'http://localhost:3000';
-// const URL = 'https://desolate-ridge-78152.herokuapp.com';
+// const URL = 'http://localhost:3000';
+const URL = 'https://desolate-ridge-78152.herokuapp.com';
 
 const login = user => dispatch => {
   dispatch({type: 'LOADING'});
