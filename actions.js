@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-// const URL = 'http://localhost:3000';
-const URL = 'https://desolate-ridge-78152.herokuapp.com';
+const URL = 'http://localhost:3000';
+// const URL = 'https://desolate-ridge-78152.herokuapp.com';
 
 const login = user => dispatch => {
   dispatch({type: 'LOADING'});
@@ -25,6 +25,7 @@ const login = user => dispatch => {
         dispatch({type: 'GET_USER', payload: resp.user});
         dispatch({type: 'SAVINGS', payload: resp.user.savings});
         dispatch({type: 'NO_ERROR', payload: resp.message});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         AsyncStorage.getItem('id_token');
       } else {
         dispatch({type: 'ERROR', payload: resp.message});
@@ -55,6 +56,7 @@ const signup = user => dispatch => {
         dispatch({type: 'GET_USER', payload: resp.user});
         dispatch({type: 'SAVINGS', payload: resp.user.savings});
         dispatch({type: 'NO_ERROR', payload: resp.message});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         AsyncStorage.getItem('id_token');
       } else {
         dispatch({type: 'ERROR', payload: resp.message});
@@ -81,6 +83,7 @@ const fetchUser = (arg, dispatch) => {
         dispatch({type: 'SAVINGS', payload: resp.savings});
         dispatch({type: 'EXPENSES', payload: resp.expenses});
         dispatch({type: 'CATEGORIES', payload: resp.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         dispatch({type: 'DONE_LOADING'});
       });
   };
@@ -112,6 +115,7 @@ const logout = dispatch => {
     dispatch({type: 'NO_SAVINGS'});
     dispatch({type: 'NO_EXPENSES'});
     dispatch({type: 'NO_CATEGORIES'});
+    dispatch({type: 'NO_DEAD_SAVINGS'});
   };
 };
 
@@ -133,7 +137,14 @@ const postExpense = user => dispatch => {
     .then(res => res.json())
     .then(data => {
       if (!data.status) {
-        dispatch({type: 'EXPENSES', payload: data});
+        dispatch({type: 'BALANCE', payload: data.balance});
+        dispatch({type: 'GET_USER', payload: data});
+        dispatch({type: 'INCOMES', payload: data.incomes});
+        dispatch({type: 'SAVINGS', payload: data.savings});
+        dispatch({type: 'EXPENSES', payload: data.expenses});
+        dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
+        dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
       }
@@ -161,6 +172,7 @@ const postSavings = saving => dispatch => {
         dispatch({type: 'SAVINGS', payload: data.savings});
         dispatch({type: 'EXPENSES', payload: data.expenses});
         dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
@@ -189,6 +201,7 @@ const postIncome = income => dispatch => {
         dispatch({type: 'SAVINGS', payload: data.savings});
         dispatch({type: 'EXPENSES', payload: data.expenses});
         dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
@@ -217,6 +230,7 @@ const updateSavings = saving => dispatch => {
         dispatch({type: 'SAVINGS', payload: data.savings});
         dispatch({type: 'EXPENSES', payload: data.expenses});
         dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
@@ -246,6 +260,7 @@ const removeExpense = user => dispatch => {
         dispatch({type: 'SAVINGS', payload: data.savings});
         dispatch({type: 'EXPENSES', payload: data.expenses});
         dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
@@ -275,6 +290,36 @@ const removeIncome = user => dispatch => {
         dispatch({type: 'SAVINGS', payload: data.savings});
         dispatch({type: 'EXPENSES', payload: data.expenses});
         dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
+        dispatch({type: 'NO_ERROR'});
+      } else {
+        dispatch({type: 'ERROR', payload: data.message});
+      }
+      dispatch({type: 'DONE_LOADING'});
+    });
+};
+
+const removeSavings = saving => dispatch => {
+  dispatch({type: 'LOADING'});
+  return fetch(`${URL}/expenses/${saving.id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: saving.token,
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+    body: saving,
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.status) {
+        dispatch({type: 'BALANCE', payload: data.balance});
+        dispatch({type: 'GET_USER', payload: data});
+        dispatch({type: 'INCOMES', payload: data.incomes});
+        dispatch({type: 'SAVINGS', payload: data.savings});
+        dispatch({type: 'EXPENSES', payload: data.expenses});
+        dispatch({type: 'CATEGORIES', payload: data.categories});
+        dispatch({type: 'DEAD_SAVINGS', payload: resp.deadSavings});
         dispatch({type: 'NO_ERROR'});
       } else {
         dispatch({type: 'ERROR', payload: data.message});
@@ -299,4 +344,5 @@ export {
   removeError,
   postIncome,
   removeIncome,
+  removeSavings,
 };

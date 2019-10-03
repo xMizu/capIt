@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   signUp: {
     fontSize: 16,
-    color: 'white',
+    color: '#E5F4E3',
   },
   errorText: {
     textAlign: 'center',

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {getToken, fetchUser, fetchCategories} from '../actions';

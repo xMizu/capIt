@@ -10,7 +10,6 @@ import React from 'react';
 import AuthLoader from './containers/AuthLoader';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
-import Home from './containers/Home';
 import Payment from './components/Payment';
 import Savings from './components/Savings';
 import SavingsList from './containers/SavingsList';
@@ -19,42 +18,7 @@ import RecentTransactions from './components/RecentTransactions';
 import AddExpense from './components/AddExpense';
 import {StyleSheet, View} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
-
-// const AppStack = createMaterialTopTabNavigator(
-//   {
-//     Home: Home,
-//   },
-//   {
-//     initialRouteName: 'Home',
-//     lazy: true,
-//     tabBarPosition: 'top',
-//     tabBarOptions: {
-//       tabStyle: {
-//         backgroundColor: '#41B3A3',
-//         height: 70,
-//         pressOpacity: 0.5,
-//         activeTintColor: 'salmon',
-//         inactiveTintColor: 'olive',
-//       },
-//     },
-//   },
-// );
-
-// const AppStack = createMaterialBottomTabNavigator(
-//   {
-//     Payment: Payment,
-//     Savings: Savings,
-//     Home: Home,
-//     AddExpense: AddExpense,
-//     RecentTransactions: RecentTransactions,
-//   },
-//   {
-//     shifting: true,
-//     initialRouteName: 'Home',
-//   },
-// );
 
 const AppStack = createMaterialTopTabNavigator(
   {

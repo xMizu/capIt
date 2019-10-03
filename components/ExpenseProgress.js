@@ -97,7 +97,7 @@ const ExpenseProgress = props => {
         <TouchableWithoutFeedback onPress={toggleModal}>
           <Modal
             isVisible={modal}
-            animationIn="wobble"
+            animationIn="slideInUp"
             animationOut="slideOutDown">
             <View
               style={{

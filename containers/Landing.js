@@ -1,14 +1,40 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {StyleSheet, Text, View, Dimensions, ActionSheetIOS} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  ActionSheetIOS,
+  Alert,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import PieChartExample from '../components/PieChart';
 import {Button} from 'react-native-elements';
-import {logout} from '../actions';
+import {logout, removeSavings} from '../actions';
 import RNShake from 'react-native-shake';
+import NotifService from '../components/NotifService';
 
 const Landing = props => {
+  const savingsChecker = () => {
+    if (props.deadSavings.length > 0) {
+      props.deadSavings.map(saving => {
+        const save = {...saving, token: props.token};
+        notif.scheduleNotif(saving);
+        props.removeSavings(save);
+      });
+    }
+  };
+
+  const onNotif = notif => {
+    console.log(notif);
+    Alert.alert(notif.title, notif.message);
+  };
+
+  const notif = new NotifService(onNotif);
+
   useEffect(() => {
+    savingsChecker();
     RNShake.addEventListener('ShakeEvent', () => {
       action();
     });
@@ -50,19 +76,22 @@ const Landing = props => {
     props.navigation.navigate('Payment');
   };
 
-  console.log('landing');
+  console.log('landing', notif);
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>
+          <Text
+            style={styles.text}
+            onPress={() => {
+              console.log('click');
+              notif.localNotif();
+            }}>
             {props.user ? `Welcome \n ${props.user.name}` : null}
           </Text>
+          <Text onPress={logUserout}>hello</Text>
         </View>
-        {/* <TouchableOpacity onPress={() => logUserout(props)}>
-          <Text>Log Out</Text>
-        </TouchableOpacity> */}
         <View style={styles.pie}>
           <PieChartExample balance={props.balance} />
         </View>
@@ -174,12 +203,18 @@ const styles = StyleSheet.create({
 });
 
 const msp = state => {
-  return {user: state.user, token: state.token, balance: state.balance};
+  return {
+    user: state.user,
+    token: state.token,
+    balance: state.balance,
+    deadSavings: state.deadSavings,
+  };
 };
 
 const mdp = dispatch => {
   return {
     logout: dispatch(logout),
+    removeSavings: arg => dispatch(removeSavings(arg)),
   };
 };
 

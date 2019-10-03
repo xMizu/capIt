@@ -17,6 +17,8 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* capItTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* capItTests.m */; };
 		45E98E67B03508E9A99C6D96 /* libPods-capIt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 964E220FF451EA5E8D50E739 /* libPods-capIt.a */; };
+		928D88582346449A00807259 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928D88572346449A00807259 /* NotificationService.swift */; };
+		928D885C2346449A00807259 /* capItNoti.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 928D88552346449A00807259 /* capItNoti.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97339F65081AA395FAB49861 /* libPods-capIt-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF357938E436EA06151A0951 /* libPods-capIt-tvOSTests.a */; };
 		B808C259EBB165D177590877 /* libPods-capItTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBEEFEF0CF68ACEF42D631AD /* libPods-capItTests.a */; };
 		BEC231CA7A4112EABD292F59 /* libPods-capIt-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45ECFE70ABB7B6BF002B6139 /* libPods-capIt-tvOS.a */; };
@@ -37,7 +39,28 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "capIt-tvOS";
 		};
+		928D885A2346449A00807259 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 928D88542346449A00807259;
+			remoteInfo = capItNoti;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		928D88602346449A00807259 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				928D885C2346449A00807259 /* capItNoti.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -60,6 +83,9 @@
 		49837C1A81B03BBE72704886 /* Pods-capIt-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capIt-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-capIt-tvOS/Pods-capIt-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		4EB97FB0A6283B90EA1CA7E6 /* Pods-capIt-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capIt-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-capIt-tvOSTests/Pods-capIt-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		605B0A564227A5F402104FDC /* Pods-capItTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capItTests.release.xcconfig"; path = "Target Support Files/Pods-capItTests/Pods-capItTests.release.xcconfig"; sourceTree = "<group>"; };
+		928D88552346449A00807259 /* capItNoti.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = capItNoti.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		928D88572346449A00807259 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		928D88592346449A00807259 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		964E220FF451EA5E8D50E739 /* libPods-capIt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-capIt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7292068FCBEDC74F2CD3920 /* Pods-capIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capIt.debug.xcconfig"; path = "Target Support Files/Pods-capIt/Pods-capIt.debug.xcconfig"; sourceTree = "<group>"; };
 		CF357938E436EA06151A0951 /* libPods-capIt-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-capIt-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +125,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				97339F65081AA395FAB49861 /* libPods-capIt-tvOSTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		928D88522346449A00807259 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +217,7 @@
 				13B07FAE1A68108700A75B9A /* capIt */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* capItTests */,
+				928D88562346449A00807259 /* capItNoti */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				6DCB0933243AFDC84C9313BB /* Pods */,
@@ -201,8 +235,18 @@
 				00E356EE1AD99517003FC87E /* capItTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* capIt-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* capIt-tvOSTests.xctest */,
+				928D88552346449A00807259 /* capItNoti.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		928D88562346449A00807259 /* capItNoti */ = {
+			isa = PBXGroup;
+			children = (
+				928D88572346449A00807259 /* NotificationService.swift */,
+				928D88592346449A00807259 /* Info.plist */,
+			);
+			path = capItNoti;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,10 +282,12 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				0A61B522680864D3534B796E /* [CP] Copy Pods Resources */,
+				928D88602346449A00807259 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				928D885B2346449A00807259 /* PBXTargetDependency */,
 			);
 			name = capIt;
 			productName = capIt;
@@ -287,12 +333,30 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* capIt-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		928D88542346449A00807259 /* capItNoti */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 928D885D2346449A00807259 /* Build configuration list for PBXNativeTarget "capItNoti" */;
+			buildPhases = (
+				928D88512346449A00807259 /* Sources */,
+				928D88522346449A00807259 /* Frameworks */,
+				928D88532346449A00807259 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = capItNoti;
+			productName = capItNoti;
+			productReference = 928D88552346449A00807259 /* capItNoti.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1100;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
@@ -313,6 +377,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
+					928D88542346449A00807259 = {
+						CreatedOnToolsVersion = 11.0;
+						DevelopmentTeam = U3YX8YZ9NL;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "capIt" */;
@@ -332,6 +401,7 @@
 				00E356ED1AD99517003FC87E /* capItTests */,
 				2D02E47A1E0B4A5D006451C7 /* capIt-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* capIt-tvOSTests */,
+				928D88542346449A00807259 /* capItNoti */,
 			);
 		};
 /* End PBXProject section */
@@ -362,6 +432,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		928D88532346449A00807259 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -610,6 +687,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		928D88512346449A00807259 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				928D88582346449A00807259 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -622,6 +707,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* capIt-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		928D885B2346449A00807259 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 928D88542346449A00807259 /* capItNoti */;
+			targetProxy = 928D885A2346449A00807259 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -690,6 +780,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7292068FCBEDC74F2CD3920 /* Pods-capIt.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -712,6 +803,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3E70064F9F1F98C1230C5EE5 /* Pods-capIt.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U3YX8YZ9NL;
@@ -940,6 +1032,61 @@
 			};
 			name = Release;
 		};
+		928D885E2346449A00807259 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = U3YX8YZ9NL;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = capItNoti/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.cap.capItNoti;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		928D885F2346449A00807259 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = U3YX8YZ9NL;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = capItNoti/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.cap.capItNoti;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -984,6 +1131,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		928D885D2346449A00807259 /* Build configuration list for PBXNativeTarget "capItNoti" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				928D885E2346449A00807259 /* Debug */,
+				928D885F2346449A00807259 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

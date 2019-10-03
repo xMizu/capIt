@@ -12,6 +12,7 @@ let defaultState = {
   savings: [],
   balance: 0,
   incomes: [],
+  deadSavings: [],
 };
 
 function fetchUser(state = defaultState.user, action) {
@@ -30,6 +31,17 @@ function setExpenses(state = defaultState.expenses, action) {
     case 'EXPENSES':
       return action.payload;
     case 'NO_EXPENSES':
+      return [];
+    default:
+      return state;
+  }
+}
+
+function deadSavingsHandler(state = defaultState.deadSavings, action) {
+  switch (action.type) {
+    case 'DEAD_SAVINGS':
+      return action.payload;
+    case 'NO_DEAD_SAVINGS':
       return [];
     default:
       return state;
@@ -147,6 +159,7 @@ const rootReducer = combineReducers({
   savings: savingsHandler,
   balance: balanceHandler,
   incomes: incomehandler,
+  deadSavings: deadSavingsHandler,
 });
 
 export default rootReducer;
